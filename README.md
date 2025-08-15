@@ -8,6 +8,7 @@ Data dikirim ke **MQTT broker** dalam format JSON dan ditampilkan di **Web Dashb
 ## 📷 Preview Wokwi
 ![Preview Wokwi](assets/img/gambar.png)  
 > *Gambar rangkaian simulasi di Wokwi*
+[Link wokwi](https://wokwi.com/projects/439318193669152769)
 
 ---
 
