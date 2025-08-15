@@ -1,4 +1,4 @@
-# 🌡️🔥 ESP32 Gas & Suhu Monitoring + MQTT + Web Dashboard
+# ESP32 Gas & Suhu Monitoring + MQTT + Web Dashboard
 
 Proyek ini menggunakan **ESP32**, **sensor DHT11**, dan **sensor gas MQ-2** untuk memantau **suhu**, **kelembapan**, dan **kebocoran gas** secara **realtime**.  
 Data dikirim ke **MQTT broker** dalam format JSON dan ditampilkan di **Web Dashboard interaktif** dengan desain modern.
