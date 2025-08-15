@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gas & Suhu Monitoring</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #001F54, #00509E, #00B4D8);
+      background-size: 300% 300%;
+      animation: gradientMove 10s ease infinite;
+      color: #fff;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    header {
+      margin-bottom: 30px;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      margin: 0;
+      font-weight: 600;
+    }
+    header p {
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      max-width: 1000px;
+    }
+    .card {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      min-width: 220px;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .label {
+      font-size: 1rem;
+      opacity: 0.85;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+    .value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #FFDD00;
+      transition: all 0.3s ease-in-out;
+    }
+    .status-safe { color: #00E676; }
+    .status-danger { color: #FF3D00; animation: blink 1s infinite; }
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.5; }
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+    @media (max-width: 600px) {
+      .value { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gas & Suhu Monitoring</h1>
+    <p>Realtime dari MQTT Broker</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="label">Suhu (°C)</div>
+      <div id="temp" class="value">--</div>
+      <div id="temp-status" style="opacity:0.8; font-size:0.9rem;">-</div>
+    </div>
+    <div class="card">
+      <div class="label">Kelembapan (%)</div>
+      <div id="hum" class="value">--</div>
+    </div>
+    <div class="card">
+      <div class="label">Status Gas</div>
+      <div id="gas-status" class="value status-safe">--</div>
+    </div>
+    <div class="card">
+      <div class="label">Update Terakhir</div>
+      <div id="last-update" class="value" style="font-size:1.2rem;">--</div>
+    </div>
+    <div class="card">
+      <div class="label">Lokasi</div>
+      <div class="value" style="font-size:1.2rem;">Rumah Utama</div>
+    </div>
+  </div>
+
+  <footer>© 2025 Realtime Gas & Temp Dashboard</footer>
+
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script>
+    const broker = 'wss://test.mosquitto.org:8081/mqtt';
+    const topic = 'gas/rumah';
+    const client = mqtt.connect(broker);
+
+    client.on('connect', () => {
+      console.log('Terhubung ke MQTT Broker');
+      client.subscribe(topic);
+    });
+
+    client.on('message', (t, message) => {
+      try {
+        const data = JSON.parse(message.toString());
+        
+        animateValue("temp", data.temperature.toFixed(2));
+        animateValue("hum", data.humidity.toFixed(2));
+
+        // Status suhu
+        const tempStatusEl = document.getElementById("temp-status");
+        if (data.temperature < 20) {
+          tempStatusEl.textContent = "Dingin";
+        } else if (data.temperature <= 30) {
+          tempStatusEl.textContent = "Normal";
+        } else {
+          tempStatusEl.textContent = "Panas";
+        }
+
+        // Status gas
+        const gasStatusEl = document.getElementById('gas-status');
+        if (data.gas > 2000) {
+          gasStatusEl.textContent = "Gas Bocor";
+          gasStatusEl.classList.remove("status-safe");
+          gasStatusEl.classList.add("status-danger");
+        } else {
+          gasStatusEl.textContent = "Aman";
+          gasStatusEl.classList.remove("status-danger");
+          gasStatusEl.classList.add("status-safe");
+        }
+
+        // Update waktu
+        const now = new Date();
+        document.getElementById("last-update").textContent =
+          now.toLocaleTimeString();
+
+      } catch (e) {
+        console.error('Data MQTT bukan JSON valid', e);
+      }
+    });
+
+    client.on('error', (err) => {
+      console.error('MQTT error: ', err);
+    });
+
+    // Efek animasi angka
+    function animateValue(id, newValue) {
+      const el = document.getElementById(id);
+      el.style.transform = "scale(1.2)";
+      el.textContent = newValue;
+      setTimeout(() => { el.style.transform = "scale(1)"; }, 200);
+    }
+  </script>
+</body>
+</html>
