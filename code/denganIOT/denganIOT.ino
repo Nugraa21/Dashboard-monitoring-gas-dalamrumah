@@ -3,8 +3,8 @@
 #include "DHT.h"
 
 // === Konfigurasi WiFi ===
-const char* ssid = "Pp";  
-const char* password = "12345678";
+const char* ssid = "baba12";  
+const char* password = "1sampai9";
 
 // === Konfigurasi MQTT ===
 const char* mqtt_server = "test.mosquitto.org"; 
