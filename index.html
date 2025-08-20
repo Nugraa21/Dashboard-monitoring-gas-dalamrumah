@@ -151,7 +151,7 @@ const topic = 'monitoring/rumah';
 
         // Status gas
         const gasStatusEl = document.getElementById('gas-status');
-        if (data.gas > 2000) {
+        if (data.gas > 900) {
           gasStatusEl.textContent = "Gas Bocor";
           gasStatusEl.classList.remove("status-safe");
           gasStatusEl.classList.add("status-danger");
