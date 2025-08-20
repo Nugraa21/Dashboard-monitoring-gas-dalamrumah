@@ -120,8 +120,11 @@
 
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script>
-    const broker = 'wss://test.mosquitto.org:8081/mqtt';
-    const topic = 'monitoring/rumah';
+    // const broker = 'wss://test.mosquitto.org:8081/mqtt';
+    // const topic = 'monitoring/rumah';
+    const broker = 'ws://broker.hivemq.com:8000/mqtt';
+const topic = 'monitoring/rumah';
+
     const client = mqtt.connect(broker);
 
     client.on('connect', () => {

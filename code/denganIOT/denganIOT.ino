@@ -7,7 +7,7 @@ const char* ssid = "baba12";
 const char* password = "1sampai9";
 
 // === Konfigurasi MQTT ===
-const char* mqtt_server = "test.mosquitto.org"; 
+const char* mqtt_server = "broker.hivemq.com"; 
 const char* mqtt_topic = "monitoring/rumah";           
 
 // === Pin dan Tipe Sensor ===
