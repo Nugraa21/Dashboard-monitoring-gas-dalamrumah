@@ -3,12 +3,12 @@
 #include "DHT.h"
 
 // === Konfigurasi WiFi ===
-const char* ssid = "nugra";  
-const char* password = "081328400060";
+const char* ssid = "Pp";  
+const char* password = "12345678";
 
 // === Konfigurasi MQTT ===
 const char* mqtt_server = "test.mosquitto.org"; 
-const char* mqtt_topic = "gas/rumah";           
+const char* mqtt_topic = "monitoring/rumah";           
 
 // === Pin dan Tipe Sensor ===
 #define DHTPIN 21
