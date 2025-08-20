@@ -1,11 +1,11 @@
 #include "DHT.h"
 
 // === Pin dan Tipe Sensor ===
-#define DHTPIN 4
+#define DHTPIN 34
 #define DHTTYPE DHT11
-#define GAS_SENSOR_PIN 34  // Pin analog MQ-2
-#define LED_PIN 2
-#define BUZZER_PIN 15
+#define GAS_SENSOR_PIN 22  // Pin analog MQ-2
+#define LED_PIN 18
+#define BUZZER_PIN 19
 
 // Ambang batas kadar gas (0-4095 untuk ESP32 ADC)
 int gasThreshold = 2000; // bisa diubah sesuai kebutuhan
